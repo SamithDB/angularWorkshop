@@ -1,0 +1,17 @@
+<div class="card h-100"
+     (click)="onClick($event)"
+     appHighlightable
+     [appHighlightableClass]="'shadow'"
+>
+  <a href="#"><img class="card-img-top" [src]="course.imgUrl" alt=""></a>
+  <div class="card-body">
+    <h4 class="card-title">
+      <a href="#">{{course.title | titlecase }}</a>
+    </h4>
+    <h5>{{course.price | currency : 'EUR' }}</h5>
+    <p class="card-text">{{course.description | ellipsis: 50 }}</p>
+  </div>
+  <div class="card-footer">
+    <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+  </div>
+</div>
