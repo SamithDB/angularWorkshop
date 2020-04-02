@@ -1,0 +1,11 @@
+<div class="row">
+  <div 
+  *ngFor="let thisCourse of courses"
+  class="col-lg-4 col-md-6 mb-4">
+    <app-course 
+    [course]="thisCourse" 
+    (courseSelected)="onCourseSelect($event)"
+    >
+    </app-course>
+  </div>
+</div>
