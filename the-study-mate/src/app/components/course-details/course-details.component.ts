@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Course } from 'src/app/models/course';
-import { courseList } from '../../data/courses-list';
 
 
 @Component({
@@ -17,6 +16,6 @@ export class CourseDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.thisRoute.snapshot.paramMap.get('id');
-    this.course = courseList.find( c => c.title === id);
+    // this.course = courseList.find( c => c.title === id);
   }
 }

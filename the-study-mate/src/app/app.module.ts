@@ -24,7 +24,7 @@ import { AccessDeniedComponent } from './components/access-denied/access-denied.
 import { AuthorizationGuard } from './guards/authorization.guard';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { environment } from '../environments/environment';
+import { environment } from 'src/environments/environment';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -67,7 +67,6 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     NgbModule,
     ReactiveFormsModule,
-    BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule
   ],
