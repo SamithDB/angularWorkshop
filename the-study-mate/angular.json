@@ -118,8 +118,13 @@
               "devServerTarget": "the-study-mate:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
-    }},
+    }
+  },
   "defaultProject": "the-study-mate"
 }

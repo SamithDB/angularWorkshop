@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "mango-hub": {
+      "hosting": {
+        "the-study-mate": [
+          "mango-hub"
+        ]
+      }
+    }
+  }
+}

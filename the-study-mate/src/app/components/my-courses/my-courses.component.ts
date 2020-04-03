@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Course } from 'src/app/models/course';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { CourseEditModalComponent } from './course-edit-modal/course-edit-modal.component';
 import { CoursesStoreService } from 'src/app/services/courses-store.service';
+import { FirstServiceService } from 'src/app/services/first-service.service';
+import { Subscription } from 'rxjs';
 
 const DEBUG = false;
 
@@ -11,18 +13,20 @@ const DEBUG = false;
   templateUrl: './my-courses.component.html',
   styleUrls: ['./my-courses.component.css']
 })
-export class MyCoursesComponent implements OnInit {
+export class MyCoursesComponent implements OnInit, OnDestroy {
   courses: Course[];
+  coursesSubscription: Subscription;
 
   constructor(
     private modalService: NgbModal,
-    private courseService: CoursesStoreService
+    private courseService: CoursesStoreService,
+    private courseHelper: FirstServiceService
   ) {
     console.log(this.courses);
   }
 
   ngOnInit(): void {
-    this.courseService.getCourses().subscribe(
+    this.coursesSubscription = this.courseService.getCourses().subscribe(
       (newCourses: Course[]) => { 
         this.courses = newCourses;
         console.log( this.courses);
@@ -36,34 +40,17 @@ export class MyCoursesComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.coursesSubscription.unsubscribe();
+  }
+
   createCourse() {
-    this.openModal(
-      {
-        title: '',
-        description: '',
-        price: null
-      } as Course,
-      'Create course'
-    ).then(
-      value => {
-        this.courseService.createCourse(value);
-      },
-      reason => console.log(reason)
-    );
-  }
-
-  onCourseEdit(course: Course) {
-    this.openModal(course, 'Edit course').then(
-      modifiedCourse => {
-        console.log( modifiedCourse);
-        this.courseService.updateCourse(modifiedCourse);
-      },
-      reason => console.log(reason)
-    );
-  }
-
-  onCourseDelete(course: Course) {
-    this.courseService.deleteCourse(course);
+    this.courseHelper.openCoureModal({
+      title: '',
+      description: '',
+      price: null
+    } as Course,
+    'Create course');
   }
 
   private openModal(course: Course, title: string): Promise<any> {

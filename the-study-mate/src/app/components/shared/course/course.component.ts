@@ -11,6 +11,9 @@ import {
 } from '@angular/core';
 import { Course } from 'src/app/models/course';
 import { FirstServiceService } from 'src/app/services/first-service.service';
+import { CoursesStoreService } from 'src/app/services/courses-store.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CourseEditModalComponent } from '../../my-courses/course-edit-modal/course-edit-modal.component';
 
 const DEBUG = false;
 
@@ -24,18 +27,18 @@ export class CourseComponent
   @Input() course: Course;
   @Input() editable = false;
   @Output() courseSelected = new EventEmitter<Course>();
-  @Output() courseEdited = new EventEmitter<Course>();
-  @Output() couresDeleted = new EventEmitter<Course>();
   inFocus = false;
 
   constructor(private el: ElementRef<HTMLElement>, 
-    private firstService: FirstServiceService) {
+    private courseHelper: FirstServiceService,
+    private courseStore: CoursesStoreService,
+    private modalService: NgbModal) {
     
     this.logIt('constructor');
   }
 
   ngOnInit(): void {
-    this.firstService.anotherGreeting();
+    this.courseHelper.anotherGreeting();
     this.logIt('ngOnInit');
     if (DEBUG) {
       setInterval(() => {
@@ -70,11 +73,11 @@ export class CourseComponent
   }
 
   onEdit() {
-    this.courseEdited.emit(this.course);
+    this.courseHelper.openCoureModal(this.course, "Edit course");
   }
 
   onDelete() {
-    this.couresDeleted.emit(this.course);
+    this.courseStore.deleteCourse( this.course);
   }
 
   logIt(checkpoint: string) {
@@ -87,4 +90,5 @@ export class CourseComponent
       );
     }
   }
+
 }

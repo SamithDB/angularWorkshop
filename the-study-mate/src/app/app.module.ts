@@ -20,7 +20,11 @@ import { BackHomeButtonComponent } from './components/back-home-button/back-home
 import { CourseEditModalComponent } from './components/my-courses/course-edit-modal/course-edit-modal.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FirstServiceService } from './services/first-service.service';
+import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
+import { AuthorizationGuard } from './guards/authorization.guard';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { environment } from '../environments/environment';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -28,6 +32,12 @@ const routes: Routes = [
   { path: 'about', component: NotImplementedComponent },
   { path: 'contact', component: NotImplementedComponent },
   { path: 'course-details/:id', component: CourseDetailsComponent },
+  { path: 'access-denied', component: AccessDeniedComponent },
+  {
+    path: 'admin-dashboard',
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
+    canLoad: [AuthorizationGuard]
+  },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
@@ -49,13 +59,17 @@ const routes: Routes = [
     NotImplementedComponent,
     PageNotFoundComponent,
     BackHomeButtonComponent,
-    CourseEditModalComponent
+    CourseEditModalComponent,
+    AccessDeniedComponent
   ],
   imports: [
-    BrowserModule, 
+    BrowserModule,
     RouterModule.forRoot(routes),
     NgbModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule
   ],
   bootstrap: [AppComponent]
 })

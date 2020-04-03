@@ -7,6 +7,7 @@ import {
   FormBuilder,
   Validators
 } from '@angular/forms';
+import { CoursesStoreService } from 'src/app/services/courses-store.service';
 
 @Component({
   selector: 'app-course-edit-modal',
@@ -19,7 +20,11 @@ export class CourseEditModalComponent implements OnInit {
 
   formGroup: FormGroup;
 
-  constructor(private activeModal: NgbActiveModal, private fb: FormBuilder) {}
+  constructor(
+    private activeModal: NgbActiveModal,
+    private fb: FormBuilder,
+    private courseStore: CoursesStoreService
+  ) {}
 
   ngOnInit(): void {
     this.formGroup = this.fb.group({
@@ -34,8 +39,12 @@ export class CourseEditModalComponent implements OnInit {
     const value = this.formGroup.value as Course;
     if (this.course.id) {
       value.id = this.course.id;
+      this.courseStore.updateCourse(value);
+    } else {
+      this.courseStore.createCourse(value);
     }
-    this.activeModal.close(value);
+
+    this.activeModal.close('close');
   }
 
   onClose() {
